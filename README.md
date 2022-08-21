@@ -36,3 +36,16 @@ docker cp $(docker create 2c5fb493f2):/tmp/bootstrap_ghc - | xz -c > ghc.tar.xz
 ```
 
 where `2c5fb493f2` is the hash that `docker build` displays at the end.
+
+
+### Using the bootstrap ghc on Gentoo
+
+1. Extract `ghc.tar.xz` on the target system such that the prefix remains
+   the same
+2. Add `PATH="/tmp/bootstrap_ghc/bin:${PATH}"` to `/etc/portage/env/dev-lang/ghc`
+3. Emerge ghc with `USE=ghcbootstrap`
+4. If the build completes successfully, remove the `PATH` setting from
+   `/etc/portage/env` and use [this script][1] to build a redistibutable
+   bindist
+
+[1]: https://gist.github.com/zeldin/2c3708093e6c99102aba39cddc9fd498
